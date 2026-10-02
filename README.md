@@ -9,3 +9,10 @@
 波形・心臓の変形・合成音は教育用の模式表現で、実測値・診断用シミュレーションではない。
 
 素材の出典・ライセンス・改変内容は [ATTRIBUTION.md](ATTRIBUTION.md) と教材の「出典」に記載。
+
+## 配布資料
+
+- [学生用・穴埋め資料](https://ashukuri.github.io/cardiac-cycle-lecture/student.html)
+- [穴埋め資料・解答版](https://ashukuri.github.io/cardiac-cycle-lecture/answers.html)
+
+ブラウザ上部の「印刷」からA4横で印刷できる。全11枚。心周期の6期は各1枚。各HTMLは画像を含む単独ファイルとしてオフラインでも利用可能。素材の出典・ライセンスは [ATTRIBUTION.md](ATTRIBUTION.md) を参照。
