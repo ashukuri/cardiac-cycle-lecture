@@ -65,5 +65,24 @@ function makePhasePrint(i){
  c.querySelectorAll('*').forEach(e=>{for(let a of [...e.attributes]){let val=a.value;for(let [old,name]of ids){val=val.replaceAll('url(#'+old+')','url(#'+name+')');if(val==='#'+old)val='#'+name}if(val!==a.value)e.setAttribute(a.name,val)}});
  $('studio').before(c);
 }
-window.addEventListener('beforeprint',()=>{pause();document.querySelectorAll('.studentPrintCopy').forEach(e=>e.remove());for(let i of [1,2]){setAnatomyTopic(i);blankRendered($('anatomyLead'));let c=$('anatomyLead').cloneNode(true);c.id='studentAnatomy'+i;c.classList.add('studentPrintCopy');c.querySelector('.printOnly').textContent=i===1?'01 位置・壁・腱索':'02 冠動脈';$('intro').before(c)}setAnatomyTopic(0);blankRendered($('anatomyLead'));for(let id of ['intro','anatomy'])blankRendered($(id));$('intro').insertAdjacentHTML('afterbegin',document.querySelector('#intro>.printOnly')?'':'<h2 class="printOnly">03 心周期の概要</h2>');$('anatomy').insertAdjacentHTML('afterbegin',document.querySelector('#anatomy>.printOnly')?'':'<h2 class="printOnly">04 血流と弁</h2>');for(let i=0;i<6;i++)makePhasePrint(i)});window.addEventListener('afterprint',()=>goLesson(0));goLesson(0);
+
+function makePVPrint(){
+ const answer=document.body.classList.contains('answerHandout');
+ const fill=(v)=>answer?'<strong style="color:#a32d22">'+v+'</strong>':'________________';
+ const point=q=>{let m=model(q);return [135+(m.v-30)*4,330-m.lp*2.2]};
+ const path=Array.from({length:501},(_,i)=>(i?'L':'M')+point(i/500).join(',')).join(' ');
+ const eventTimes=[.12,.2,.55,.64], letters=['A','B','C','D'];
+ let diagram='<svg viewBox="0 0 750 430" style="width:100%;height:100%" aria-label="左室の圧容積曲線。AからB、C、Dを経てAへ進む"><defs><marker id="pvPrintArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="#172b3d" stroke-width="1.5"/></marker></defs><text x="20" y="28" font-size="23">左室圧（mmHg）</text><path d="M135 40V330H600" fill="none" stroke="#172b3d" stroke-width="2"/>';
+ for(let k of [0,60,120])diagram+='<line x1="135" x2="600" y1="'+(330-k*2.2)+'" y2="'+(330-k*2.2)+'" stroke="#ddd"/><text x="120" y="'+(338-k*2.2)+'" font-size="20" text-anchor="end">'+k+'</text>';
+ diagram+='<path d="'+path+'Z" fill="#eef4fa" stroke="#245c91" stroke-width="4"/>';
+ eventTimes.forEach((q,i)=>{let [x,y]=point(q);diagram+='<circle cx="'+x+'" cy="'+y+'" r="6" fill="#172b3d"/><text x="'+(x+(i<2?16:-26))+'" y="'+(y+(i===0||i===3?-12:-15))+'" font-size="27" font-weight="bold">'+letters[i]+'</text>'});
+ for(let [x1,y1,x2,y2]of [[515,275,515,200],[410,62,335,62],[215,180,215,255],[325,309,405,309]])diagram+='<path d="M'+x1+' '+y1+'L'+x2+' '+y2+'" fill="none" stroke="#172b3d" stroke-width="2" marker-end="url(#pvPrintArrow)"/>';
+ for(let v of [50,120])diagram+='<text x="'+(135+(v-30)*4)+'" y="362" font-size="22" text-anchor="middle">'+v+'</text>';
+ diagram+='<text x="355" y="403" font-size="25">左室容積（mL）</text></svg>';
+ let c=document.createElement('section');c.id='studentPV';c.className='lesson studentPrintCopy studentPhasePrint';
+ c.innerHTML='<h2 class="printOnly">圧−容積曲線（左心室）</h2><div style="display:grid;grid-template-columns:1.15fr 1fr;gap:20px;height:145mm"><div>'+diagram+'</div><div style="font-size:17px;line-height:1.55"><h3 style="font-size:20px;margin:8px 0">各区間の名称</h3><p>A → B：'+fill('等容収縮期')+'<br>B → C：'+fill('駆出期')+'<br>C → D：'+fill('等容弛緩期')+'<br>D → A：'+fill('流入（急速流入期・緩速流入期・心房収縮期）')+'</p><h3 style="font-size:20px;margin:8px 0">切り替わりの弁イベント</h3><p>A：'+fill('僧帽弁閉鎖（Ⅰ音）')+'<br>B：'+fill('大動脈弁開放')+'<br>C：'+fill('大動脈弁閉鎖（Ⅱ音）')+'<br>D：'+fill('僧帽弁開放')+'</p><h3 style="font-size:20px;margin:8px 0">容積を読む</h3><p>拡張末期容積（EDV）：'+fill('120')+' mL<br>収縮末期容積（ESV）：'+fill('50')+' mL<br>一回拍出量（SV）＝EDV − ESV<br>＝'+fill('70')+' mL</p></div></div><p style="font-size:17px">等容期は全弁が'+fill('閉鎖')+'し、心室容積は'+fill('一定')+'。</p><p style="font-size:14px">矢印は心周期の進む向き。数値は教育用の例。</p>';
+ $('studio').before(c);
+}
+
+window.addEventListener('beforeprint',()=>{pause();document.querySelectorAll('.studentPrintCopy').forEach(e=>e.remove());for(let i of [1,2]){setAnatomyTopic(i);blankRendered($('anatomyLead'));let c=$('anatomyLead').cloneNode(true);c.id='studentAnatomy'+i;c.classList.add('studentPrintCopy');c.querySelector('.printOnly').textContent=i===1?'01 位置・壁・腱索':'02 冠動脈';$('intro').before(c)}setAnatomyTopic(0);blankRendered($('anatomyLead'));for(let id of ['intro','anatomy'])blankRendered($(id));$('intro').insertAdjacentHTML('afterbegin',document.querySelector('#intro>.printOnly')?'':'<h2 class="printOnly">03 心周期の概要</h2>');$('anatomy').insertAdjacentHTML('afterbegin',document.querySelector('#anatomy>.printOnly')?'':'<h2 class="printOnly">04 血流と弁</h2>');for(let i=0;i<6;i++)makePhasePrint(i);makePVPrint()});window.addEventListener('afterprint',()=>goLesson(0));goLesson(0);
 </script></body></html>

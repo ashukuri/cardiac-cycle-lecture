@@ -15,4 +15,4 @@
 - [学生用・穴埋め資料](https://ashukuri.github.io/cardiac-cycle-lecture/student.html)
 - [穴埋め資料・解答版](https://ashukuri.github.io/cardiac-cycle-lecture/answers.html)
 
-ブラウザ上部の「印刷」からA4横で印刷できる。全11枚。心周期の6期は各1枚。各HTMLは画像を含む単独ファイルとしてオフラインでも利用可能。素材の出典・ライセンスは [ATTRIBUTION.md](ATTRIBUTION.md) を参照。
+ブラウザ上部の「印刷」からA4横で印刷できる。全12枚。心周期の6期は各1枚。圧−容積曲線の穴埋め・解答を各版に1枚収録。各HTMLは画像を含む単独ファイルとしてオフラインでも利用可能。素材の出典・ライセンスは [ATTRIBUTION.md](ATTRIBUTION.md) を参照。
